@@ -14,10 +14,11 @@ jobs:
           submodules: recursive
 
       - name: Build GDS
-        uses: TinyTapeout/tt-gds-action@ttsky25a
+        uses: TinyTapeout/tt-gds-action@librelane
         with:
           pdk: sky130
-          tools-ref: ttsky25a
+          tools-ref: main
+          librelane-version: 3.0.0.dev38
 
   precheck:
     needs: gds
