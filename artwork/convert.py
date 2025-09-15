@@ -4,7 +4,7 @@ SIZE = (64, 64)
 
 # Input and output file paths
 input_path = "logo.png"
-output_png_path = "logo_6bpp.png"
+output_png_path = "../logo_6bpp.png"
 output_bin_path = "logo_6bpp.bin"
 output_hex_path = "../src/logo_6bpp.hex"
 

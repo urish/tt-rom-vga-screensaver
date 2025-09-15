@@ -11,7 +11,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 Displays a bouncing 64x64x6bpp Tiny Tapeout logo on the screen:
 
-![Tiny Tapeout screensaver](../artwork/logo_6bpp.png)
+![Tiny Tapeout screensaver](logo_6bpp.png)
 
 ## How to test
 
