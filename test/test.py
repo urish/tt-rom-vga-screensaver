@@ -24,9 +24,6 @@ async def test_project(dut):
     V_SYNC    =   2
     V_BACK    =  33
 
-    # Number of frames to capture
-    CAPTURE_FRAMES = 3
-
     # Derived constants
     H_SYNC_START = H_DISPLAY + H_FRONT
     H_SYNC_END = H_SYNC_START + H_SYNC
@@ -102,12 +99,25 @@ async def test_project(dut):
         return frame
 
     # Start capturing
-
     os.makedirs("output", exist_ok=True)
 
-    for i in range(CAPTURE_FRAMES):
-        frame = await capture_frame(i)
-        frame.save(f"output/frame{i}.png")
+    # First frame: standard configuration
+    frame = await capture_frame(0)
+    frame.save(f"output/frame0.png")
+
+    # Second frame: we should see the logo moving by one pixel
+    frame = await capture_frame(1)
+    frame.save(f"output/frame1.png")
+
+    # Second frame: tiled logo
+    dut.ui_in.value = 1  # tile
+    frame = await capture_frame(2)
+    frame.save(f"output/frame2.png")
+
+    # Third frame: double size logo
+    dut.ui_in.value = 2  # double
+    frame = await capture_frame(3)
+    frame.save(f"output/frame3.png")
 
 
 @cocotb.test()
