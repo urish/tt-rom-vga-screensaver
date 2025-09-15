@@ -75,17 +75,17 @@
 
   "//": "Macro",
   "MACROS": {
-    "rom_tvbgone_32k": {
+    "rom_vga_logo": {
       "instances": {
         "bitmap_rom": {
           "location": [0.0, 0.0],
           "orientation": "FS"
         }
       },
-      "gds": ["dir::../macro/rom_tvbgone_32k.gds.gz"],
-      "lef": ["dir::../macro/rom_tvbgone_32k.lef"],
+      "gds": ["dir::../macro/rom_vga_logo.gds.gz"],
+      "lef": ["dir::../macro/rom_vga_logo.lef"],
       "lib": {
-        "*": ["dir::../macro/rom_tvbgone_32k.lib"]
+        "*": ["dir::../macro/rom_vga_logo.lib"]
       }
     }
   },

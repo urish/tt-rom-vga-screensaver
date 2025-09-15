@@ -90,7 +90,7 @@ module tt_um_rom_vga_screensaver (
 
   // Bitmap ROM:
   wire [7:0] rom_data;
-  rom_tvbgone_32k bitmap_rom (
+  rom_vga_logo bitmap_rom (
       .addr({y[5:0], x[5:0]}),
       .q   (rom_data)
   );
