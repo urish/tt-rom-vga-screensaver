@@ -9,6 +9,11 @@
 `endif
 
 module rom_tvbgone_32k (
+    // Power pins for the Gate Level test:
+`ifdef GL_TEST
+    inout wire VPWR,
+    inout wire VGND,
+`endif
     input wire [11:0] addr,
     output wire [7:0] q
 );
