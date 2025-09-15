@@ -6,11 +6,9 @@
 
 `default_nettype none
 
-parameter LOGO_SIZE = 128;  // Size of the logo in pixels
+parameter LOGO_SIZE = 64;  // Size of the logo in pixels
 parameter DISPLAY_WIDTH = 640;  // VGA display width
 parameter DISPLAY_HEIGHT = 480;  // VGA display height
-
-`define COLOR_WHITE 3'd7
 
 module tt_um_rom_vga_screensaver (
     input  wire [7:0] ui_in,    // Dedicated inputs
@@ -35,7 +33,6 @@ module tt_um_rom_vga_screensaver (
 
   // Configuration
   wire cfg_tile = ui_in[0];
-  wire cfg_solid_color = ui_in[1];
 
   // Tiny VGA Pmod
   assign uo_out = {hsync, B[0], G[0], R[0], vsync, B[1], G[1], R[1]};
@@ -87,32 +84,16 @@ module tt_um_rom_vga_screensaver (
   reg dir_y;
   reg manual_mode;
 
-  wire pixel_value;
-  reg [2:0] color_index;
-  wire [5:0] pallete_color;
-  wire [5:0] color;
-
   wire [9:0] x = pix_x - logo_left;
   wire [9:0] y = pix_y - logo_top;
-  wire logo_pixels = cfg_tile || (x[9:7] == 0 && y[9:7] == 0);
+  wire logo_pixels = cfg_tile || (x[9:6] == 0 && y[9:6] == 0);
 
   // Bitmap ROM:
   wire [7:0] rom_data;
-  wire [2:0] pixel_index = x[2:0];
-  assign pixel_value = rom_data[pixel_index];
   rom_tvbgone_32k bitmap_rom (
-      .addr({y[6:0], x[6:2]}),
+      .addr({y[5:0], x[5:0]}),
       .q   (rom_data)
   );
-
-  palette palette_inst (
-      .color_index(color_index),
-      .rrggbb(pallete_color)
-  );
-
-  wire [5:0] gradient_color = {1'b1, y[6:2] - x[6:2] + logo_left[6:2]};
-  assign color = cfg_solid_color ? pallete_color : gradient_color;
-
 
   // RGB output logic
   always @(posedge clk) begin
@@ -125,9 +106,9 @@ module tt_um_rom_vga_screensaver (
       G <= 0;
       B <= 0;
       if (video_active && logo_pixels) begin
-        R <= pixel_value ? color[5:4] : 0;
-        G <= pixel_value ? color[3:2] : 0;
-        B <= pixel_value ? color[1:0] : 0;
+        R <= rom_data[5:4];
+        G <= rom_data[3:2];
+        B <= rom_data[1:0];
       end
     end
   end
@@ -139,7 +120,6 @@ module tt_um_rom_vga_screensaver (
       logo_top <= 200;
       dir_y <= 0;
       dir_x <= 1;
-      color_index <= 0;
       prev_y <= 0;
       gamepad_start_prev <= 0;
       manual_mode <= 0;
@@ -195,20 +175,18 @@ module tt_um_rom_vga_screensaver (
 
     if (logo_left - 1 == 0 && !dir_x) begin
       dir_x <= 1;
-      color_index <= color_index + 1;
     end
     if (logo_left + 1 == DISPLAY_WIDTH - LOGO_SIZE && dir_x) begin
       dir_x <= 0;
-      color_index <= color_index + 1;
     end
     if (logo_top - 1 == 0 && !dir_y) begin
       dir_y <= 1;
-      color_index <= color_index + 1;
     end
     if (logo_top + 1 == DISPLAY_HEIGHT - LOGO_SIZE && dir_y) begin
       dir_y <= 0;
-      color_index <= color_index + 1;
     end
   endtask
+
+  wire  _unused = &{rom_data[7:6]};
 
 endmodule
