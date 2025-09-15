@@ -26,6 +26,8 @@
   "//": "RUN_LINTER, LINTER_INCLUDE_PDK_MODELS - Disabling the linter is not recommended!",
   "RUN_LINTER": 1,
   "LINTER_INCLUDE_PDK_MODELS": 1,
+  "QUIT_ON_SYNTH_CHECKS": 0,
+  "QUIT_ON_VERILATOR_ERRORS": 0,
 
   "//": "If you need a custom clock configuration, read the following documentation first:",
   "//": "https://tinytapeout.com/faq/#how-can-i-map-an-additional-external-clock-to-one-of-the-gpios",
@@ -47,8 +49,8 @@
   "//": "Reduce wasted space",
   "TOP_MARGIN_MULT": 1,
   "BOTTOM_MARGIN_MULT": 1,
-  "LEFT_MARGIN_MULT": 6,
-  "RIGHT_MARGIN_MULT": 6,
+  "LEFT_MARGIN_MULT": 2,
+  "RIGHT_MARGIN_MULT": 2,
 
   "//": "Absolute die size",
   "FP_SIZING": "absolute",
@@ -57,8 +59,6 @@
 
   "FP_IO_HLENGTH": 2,
   "FP_IO_VLENGTH": 2,
-
-  "FP_PDN_VPITCH": 38.87,
 
   "//": "Clock",
   "RUN_CTS": 1,
@@ -71,5 +71,40 @@
   "MAGIC_DEF_LABELS": 0,
 
   "//": "Only export pin area in LEF (without any connected nets)",
-  "MAGIC_WRITE_LEF_PINONLY": 1
+  "MAGIC_WRITE_LEF_PINONLY": 1,
+
+  "//": "Macro",
+  "MACROS": {
+    "rom_tvbgone_32k": {
+      "instances": {
+        "bitmap_rom": {
+          "location": [0.0, 0.0],
+          "orientation": "FS"
+        }
+      },
+      "gds": ["dir::../macro/rom_tvbgone_32k.gds.gz"],
+      "lef": ["dir::../macro/rom_tvbgone_32k.lef"],
+      "lib": {
+        "*": ["dir::../macro/rom_tvbgone_32k.lib"]
+      }
+    }
+  },
+
+  "//": "Macro power",
+  "//": "  Disable IR Drop report, useless anyway",
+  "RUN_IRDROP_REPORT": 0,
+
+  "//": "  Have magic consider nets of same name to be connected since our power pads are not all internally connected",
+  "MAGIC_NO_EXT_UNIQUE": 1,
+
+  "//": "  All met4 stripes are not connected internally, this causes PDN to crap out ...",
+  "ERROR_ON_PDN_VIOLATIONS": 0,
+
+  "//": "  Config",
+  "FP_PDN_HORIZONTAL_LAYER": "met3",
+  "FP_MACRO_HORIZONTAL_HALO": "4",
+  "FP_MACRO_VERTICAL_HALO": "0",
+  "FP_PDN_VOFFSET": "2",
+  "FP_PDN_VSPACING": "1.5",
+  "FP_PDN_VPITCH": "29"
 }
